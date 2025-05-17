@@ -1,0 +1,30 @@
+﻿@model Category
+
+<form method="post">
+    <input asp-for="Id" hidden />
+    <div class="border border-1 border-opacity-75 p-3 mt-4">
+        
+        <div asp-validation-summary="All"></div>
+       
+        <div class="form-floating py-2 col-12">
+            <input asp-for="Name" class="form-control border-0 shadow" />
+            <label asp-for="Name" class="ms-2"></label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+		<div class="form-floating py-2 col-12">
+			<input asp-for="DisplayOrder" class="form-control border-0 shadow" />
+			<label asp-for="DisplayOrder" class="ms-2"></label>
+			<span asp-validation-for="DisplayOrder" class="text-danger"></span>
+		</div>
+
+		<div class="row pt-2">
+			<div class="col-6 col-md-3">
+				<button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+			</div>
+			<div class="col-6 col-md-3">
+				<a asp-controller="Category" asp-action="Index" class="btn btn-outline-secondary" style="width:200px">Back to List</a>
+			</div>
+		</div>
+    </div>
+</form>
