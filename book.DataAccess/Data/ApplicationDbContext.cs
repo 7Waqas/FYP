@@ -15,6 +15,8 @@ namespace book.DataAccess.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,6 +29,38 @@ namespace book.DataAccess.Data
                
             
                 );
+            modelBuilder.Entity<Company>().HasData(
+               new Company
+               { 
+                   Id = 1,
+                   Name = "Tech Solution",
+                   StreetAddress = "123 Tech St",
+                   City="Tech City",
+                   PostalCode="12121",
+                   State="IL",
+                   PhoneNumber = "031111111111" },
+               new Company
+               {
+                   Id = 2,
+                   Name = "Vivad books",
+                   StreetAddress = "999 vivd St",
+                   City = "Vid City",
+                   PostalCode = "31313",
+                   State = "Sl",
+                   PhoneNumber = "032222222222"  },
+                new Company
+                {
+                    Id = 3,
+                    Name = "Render Club",
+                    StreetAddress = "123 Render St",
+                    City = "Render City",
+                    PostalCode = "14141",
+                    State = "RS",
+                    PhoneNumber = "034444444444"  }
+
+
+               );
+
 
             modelBuilder.Entity<Product>().HasData(
                 new Product
