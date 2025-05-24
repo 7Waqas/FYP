@@ -1,3 +1,5 @@
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 using book.DataAccess.Data;
 using book.DataAccess.Repository;
 using book.DataAccess.Repository.IRepository;
