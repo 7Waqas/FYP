@@ -26,6 +26,7 @@ namespace book.Models
         public string? OrderStatus { get; set; }
         public string? PaymentStatus { get; set; }
         public string? TrackingNumber { get; set; }
+        public string? UpdateStatus { get; set; }
         public string? Carrier { get; set; }
 
 
@@ -34,6 +35,7 @@ namespace book.Models
 
 
         public string? PaymentIntentId { get; set; }
+
 
         [Required]
         public string PhoneNumber { get; set; }
