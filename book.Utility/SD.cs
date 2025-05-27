@@ -26,6 +26,8 @@ namespace book.Utility
         public const string PaymentStatusDelayedPayment = "Delayed Payment";
         public const string PaymentStatusRejected = "Rejected";
 
+        public const string SessionCart = "SessionShoppingCart";
+
 
     }
 }

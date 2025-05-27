@@ -111,7 +111,7 @@ namespace bookNest.Areas.Admin.Controllers
         //Incomplete payment simulation
         [ActionName("Details")]
         [HttpPost]
-        public IActionResult Details_PAY_NOW ()
+        public IActionResult Details_PAY_NOW (int orderId)
         {
             var orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == OrderVm.OrderHeader.Id);
             if (orderHeader == null)

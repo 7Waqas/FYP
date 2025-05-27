@@ -236,7 +236,7 @@
                                     </div>
                                 </li>
                             </ul>
-                            @if (!User.IsInRole(SD.Role_Admin) && !User.IsInRole(SD.Role_Employee) && Model.OrderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment && Model.OrderHeader.OrderStatus != SD.StatusShipped) 
+                            @if (Model.OrderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment && Model.OrderHeader.OrderStatus != SD.StatusShipped && !User.IsInRole(SD.Role_Admin))
                             {
                                 <button type="submit" class="btn btn-success form-control my-1">Pay Now</button>
                             }
@@ -265,7 +265,7 @@
 
 
  @section Scripts {
-	   < partial name="_ValidationScriptsPartial" />
+	   <partial name="_ValidationScriptsPartial" />
 	<script>
 		function validateInput() {
 			if(document.getElementById("trackingNumber").value == "" ) {
