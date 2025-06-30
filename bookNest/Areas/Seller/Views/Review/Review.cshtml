@@ -1,0 +1,85 @@
+﻿@model bookNest.Areas.Seller.ViewModel.OrderReviewViewModel
+
+@{
+    ViewData["Title"] = "Review";
+}
+
+<style>
+    .star-rating {
+        display: flex;
+        gap: 0.3rem;
+        font-size: 1.5rem;
+    }
+
+        .star-rating .star {
+            cursor: pointer;
+            color: #ccc;
+            transition: color 0.2s;
+        }
+
+        .star-rating input:checked ~ label.star,
+        .star-rating label.star:hover,
+        .star-rating label.star:hover ~ label.star {
+            color: gold;
+        }
+
+        .star-rating input:checked + label.star,
+        .star-rating input:checked + label.star ~ label.star {
+            color: gold;
+        }
+</style>
+<h2 class="mb-4 text-center text-primary">Rate Your Purchased Products</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="OrderId" />
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @for (int i = 0; i < Model.ProductReviews.Count; i++)
+        {
+            <div class="col">
+                <div class="card shadow-sm h-100 border-info">
+                    <div class="card-body">
+                        <h5 class="card-title text-info">@Model.ProductReviews[i].ProductName</h5>
+                        <input type="hidden" asp-for="ProductReviews[@i].ProductId" />
+                        <input type="hidden" asp-for="ProductReviews[@i].OrderId" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Your Rating:</label>
+                            <div class="star-rating">
+                                @for (int star = 1; star <= 5; star++)
+                                {
+                                    var inputId = $"star_{i}_{star}";
+                                    <input type="radio" asp-for="ProductReviews[@i].Rating" value="@star" id="@inputId" hidden required />
+                                    <label for="@inputId" class="star">&#9733;</label>
+                                }
+                            </div>
+                            <span asp-validation-for="ProductReviews[@i].Rating" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ProductReviews[@i].Comment" class="form-label">Comment:</label>
+                            <textarea asp-for="ProductReviews[@i].Comment" class="form-control" rows="3" placeholder="Write your thoughts..." required></textarea>
+                            <span asp-validation-for="ProductReviews[@i].Comment" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-lg btn-success px-4">Submit All Reviews</button>
+    </div>
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

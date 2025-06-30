@@ -22,7 +22,7 @@
                     <img src="/images/book.png" style="width:30px" />
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -30,11 +30,14 @@
                         <li class="nav-item">
                             <a class="nav-link " asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="Admin" asp-controller="Order" asp-action="Index">Order Management</a>
-                        </li>
+                        @if (!User.IsInRole(SD.Role_Seller))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="Admin" asp-controller="Order" asp-action="Index">Order Management</a>
+                            </li>
+                        }
                         @if (User.IsInRole(SD.Role_Admin))
-                        { 
+                        {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Content Management
@@ -49,26 +52,51 @@
                                     <li class="nav-item">
                                         <a class="dropdown-item " asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item " asp-area="Seller" asp-controller="Review" asp-action="ReviewList">Review List</a>
+                                    </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li class="nav-item">
-                                        <a class="dropdown-item " asp-area="Identity"  asp-page="/Account/Register">Create User</a>
+                                        <a class="dropdown-item " asp-area="Identity" asp-page="/Account/Register">Create User</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="dropdown-item " asp-area="Admin" asp-controller="User" asp-action="Index">Manage User</a>
                                     </li>
+
                                 </ul>
                             </li>
-                        } 
-                      
-                        
-                            <li class="nav-item">
-                                <a class="nav-link " asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                    @await Component.InvokeAsync("ShoppingCart")
+                        }
+                        @if (User.IsInRole(SD.Role_Seller))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Content Management
                                 </a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item " asp-area="Seller" asp-controller="Product" asp-action="Index">Product</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item " asp-area="Seller" asp-controller="SellerOrder" asp-action="Index">Seller Order</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item " asp-area="Seller" asp-controller="Review" asp-action="ReviewList">Review List</a>
+                                    </li>
+                                </ul>
                             </li>
-                        
+                        }
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Contact">Contact Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                @await Component.InvokeAsync("ShoppingCart")
+                            </a>
+                        </li>
+
                     </ul>
-					<partial name="_LoginPartial" />
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
@@ -76,15 +104,66 @@
     <div class="container">
         <main role="main" class="pb-3">
             <partial name="_Notification" />
+            @{
+                var routeData = Context.GetRouteData();
+                var currentController = routeData.Values["controller"]?.ToString();
+                var currentAction = routeData.Values["action"]?.ToString();
+            }
+
+            @if (User.Identity.IsAuthenticated && !User.IsInRole(SD.Role_Seller)
+            && currentController == "Home" && currentAction == "Index")
+            {
+                <div class="alert alert-info text-center shadow-sm mb-3">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    Want to sell your books?
+                    <strong><a href="#contact-footer" class="text-dark">Contact the admin</a></strong>
+                    to request a seller account!
+                </div>
+            }
+
+
             @RenderBody()
         </main>
+
     </div>
 
-    <footer class="border-top bg-primary footer text-muted">
-        <div class="text-center">
-            Made with <i class="bi bi-heart-fill"></i> by dotNet Mystery
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <footer class="bg-primary text-white py-4 border-top">
+        <div class="container text-center" id="contact-footer">
+            <div class="row mb-3">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Contact Admin</h5>
+                    <p>
+                        <i class="bi bi-envelope-fill"></i> waqashamid3332002@gmail.com<br />
+                        <i class="bi bi-telephone-fill"></i> 0325-5685020
+                    </p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Social Links</h5>
+                    <a href="https://twitter.com/dummyadmin" target="_blank" class="text-white me-3">
+                        <i class="bi bi-twitter-x" style="font-size: 1.4rem;"></i>
+                    </a>
+                    <a href="https://x.com/dummyadmin" target="_blank" class="text-white me-3">
+                        <i class="bi bi-facebook" style="font-size: 1.4rem;"></i>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <h5>Need to Sell Books?</h5>
+                    <p>Contact admin to request <strong>Seller Access</strong> or support with login.</p>
+                </div>
+            </div>
+            <hr class="border-light" />
+            <div>
+                Made with <i class="bi bi-heart-fill text-danger"></i> by <strong>dotNet Mystery</strong>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -93,7 +172,12 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="//cdn.datatables.net/2.3.0/js/dataTables.min.js" asp-append-version="true"></script>
     <script src="https://cdn.tiny.cloud/1/okvxlygucurwwtn713lgy1had48eqo334psztbidulot3w22/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    
+
+
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="Jzulc82UNB9XMBePk4TLF";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+    </script>
+
 </body>
 </html>

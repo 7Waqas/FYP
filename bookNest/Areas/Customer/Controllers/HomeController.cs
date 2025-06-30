@@ -1,9 +1,11 @@
 
+using book.DataAccess.Data;
 using book.DataAccess.Repository.IRepository;
 using book.Models;
 using book.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -14,19 +16,37 @@ namespace bookNest.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _db;
 
-        public HomeController(ILogger<HomeController> logger,IUnitOfWork unitOfWork )
+        public HomeController(ILogger<HomeController> logger,IUnitOfWork unitOfWork, ApplicationDbContext dbContext )
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _db = dbContext;
         }
 
         public IActionResult Index()
         {
            
             IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImages");
+
+            var ratingData = _db.productReviews
+                    .GroupBy(r => r.ProductId)
+                    .Select(g => new
+                    {
+                        ProductId = g.Key,
+                        AverageRating = g.Average(r => r.Rating)
+                    }).ToDictionary(x => x.ProductId, x => x.AverageRating);
+
+            ViewBag.Ratings = ratingData;
+
             return View(productList);
         }
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
         public IActionResult Details(int productId)
         {
             ShoppingCart cart = new()

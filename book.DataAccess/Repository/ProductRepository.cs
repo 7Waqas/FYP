@@ -32,6 +32,7 @@ namespace book.DataAccess.Repository
                 objFromDb.Price50 = obj.Price50;
                 objFromDb.Price100 = obj.Price100;
                 objFromDb.ProductImages = obj.ProductImages;
+                obj.userId = obj.userId;
                 //if (obj.ImageUrl != null)
                 //{
                 //    objFromDb.ImageUrl = obj.ImageUrl;
