@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using book.Utility;
 using book.DataAccess.DbInitializer;
+using MongoDB.Driver.Core.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationDbContext>(options=>
-options.UseNpgsql(builder.Configuration["DefaultConnection"])
-);
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.ConfigureApplicationCookie(options =>
