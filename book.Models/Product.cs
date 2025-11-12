@@ -41,6 +41,8 @@ namespace book.Models
         public Category Category { get; set; }
         [ValidateNever]
         public List<ProductImage> ProductImages { get; set; }
+        public string? userId { get; set; }
+        
 
     }
 }

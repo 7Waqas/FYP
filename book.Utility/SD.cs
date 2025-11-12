@@ -12,6 +12,7 @@ namespace book.Utility
         public const string Role_Company = "Company";
         public const string Role_Admin = "Admin";
         public const string Role_Employee = "Employee";
+        public const string Role_Seller = "Seller";
 
         public const string StatusPending = "Pending";
         public const string StatusApproved = "Approved";

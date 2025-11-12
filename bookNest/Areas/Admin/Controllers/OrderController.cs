@@ -108,6 +108,7 @@ namespace bookNest.Areas.Admin.Controllers
             return RedirectToAction(nameof(Details), new { orderId = OrderVm.OrderHeader.Id });
 
         }
+       
         //Incomplete payment simulation
         [ActionName("Details")]
         [HttpPost]
